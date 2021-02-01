@@ -29,9 +29,10 @@ Field::~Field()
 
 void Field::FieldGeneration()
 {
-	int key = 6;
-	std::vector<int> vc;
+	int key = 9;
+	bool state = true;
 
+	std::vector<int> vc;
 	for (int i = 1; i < matrix_size + 1; i++) { vc.push_back(i); }
 	random_shuffle(vc.begin(), vc.end());
 
@@ -39,25 +40,19 @@ void Field::FieldGeneration()
 
 	for (int i = 1; i < matrix_size; i++)
 	{
-		if (i == 1) { key = 6; }
-		else if (i == 2) { key = 3; }
-		else if (i == 3) { key = 1; }
-		else if (i == 4) { key = 7; }
-		else if (i == 5) { key = 4; }
-		else if (i == 6) { key = 2; }
-		else if (i == 7) { key = 8; }
-		else if (i == 8) { key = 5; }
+
+		if (i % 3 == 0) { key += 6; }
+		else if (state) { key -= 3; }
+		else if (!state) { key -= 2; }
 
 		for (int j = 0; j < matrix_size; j++)
 		{
-			if (j + key > 8) {
-				Int_Field[i][j + key - 9] = vc.at(j);
-			}
+			if (j + key > 8) { Int_Field[i][j + key - 9] = vc.at(j); }
 
-			else {
-				Int_Field[i][j + key] = vc.at(j);
-			}
+			else { Int_Field[i][j + key] = vc.at(j); }
 		}
+
+		state = -state;
 	}
 }
 
